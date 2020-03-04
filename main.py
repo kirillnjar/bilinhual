@@ -22,7 +22,9 @@ def incoming():
     bot.set_request(viber_request)
     messages = bot.get_response()
     if messages is not None:
-        viber.send_messages(bot.get_user().get_id_viber(), messages)
+        print(messages)
+        viber.send_messages(bot.current_user.viber_id, messages)
+        pass
     return Response(status=200)
 
 
