@@ -1,0 +1,15 @@
+{
+      "Type":"keyboard",
+      "Buttons":[
+         {
+            "Columns": 6,
+	        "Rows": 1,
+            "ActionBody":"/start",
+            "Text": "<font color=\"#494E67\" size=\"10\"><b>СТАРТ</b></font>",				
+			"TextSize": "medium",
+			"TextHAlign": "center",
+			"TextVAlign": "center",
+			"BgColor": "#f7bb3f"
+		}
+      ]
+}
