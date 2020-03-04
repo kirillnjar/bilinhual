@@ -1,4 +1,3 @@
-from sqlalchemy import and_
 from viberbot.api.messages import PictureMessage, KeyboardMessage
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.viber_requests import ViberMessageRequest
@@ -9,7 +8,7 @@ import random
 import json
 from bot_database import *
 
-KeysStart = json.load(open('start_keyboard.json', encoding='utf-8'))
+KeysStart = dict()
 KeysWords = dict()
 
 
@@ -34,6 +33,8 @@ class viber_bot:
                     self.__response_message = self.__help__message__()
                 elif word.split(' ')[0].lower() == 'start':
                     self.__response_message = self.__new__word__message__(True)
+                elif word.split(' ')[0].lower() == 'difficulty':
+                    self.__response_message = self.__change__difficulty__message__()
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
                 else:
@@ -58,6 +59,7 @@ class viber_bot:
     # добавление нового пользователя
     def __add__new__user__(self, viber_request):
         user = self.__get__user__(viber_request)
+        self.current_user = user
         if user is None:
             user = bot_users(viber_id=viber_request.user.id, name=viber_request.user.name)
             self.session.add(user)
@@ -65,7 +67,6 @@ class viber_bot:
             messages = self.__hello__message__(user)
         else:
             messages = self.__comeback__message__(user)
-        self.current_user = user
         return messages
 
     # сообщение приветствия 1
@@ -74,7 +75,7 @@ class viber_bot:
                                    media='https://pngimage.net/wp-content/uploads/2018/06/%D1%87%D0%B5%D0%BB%D0%BE%D0'
                                          '%B2%D0%B5%D1%87%D0%BA%D0%B8-png-%D0%B4%D0%B5%D0%BD%D1%8C%D0%B3%D0%B8-2.png'),
                     TextMessage(
-                        text='Я создан для того, чтобы помогать людям в изуение новых слов на английском языке')]
+                        text='Я создан для того, чтобы помогать людям в изучение новых слов на английском языке')]
         return messages + self.__help__message__()
 
     # сообщение приветствия 2
@@ -89,8 +90,8 @@ class viber_bot:
 
     # сообщение помощи
     def __help__message__(self):
-        return [TextMessage(text='Чтобы начать изучение - напиши /start'),
-                KeyboardMessage(keyboard=KeysStart)]
+        return [TextMessage(text='Чтобы начать изучение - нажми на СТАРТ'),
+                KeyboardMessage(keyboard=self.__get__keys_start__())]
 
     # получение данных о пользователе из БД
     def __get__user__(self, viber_request):
@@ -107,9 +108,9 @@ class viber_bot:
     def __unknown__message__(self):
         self.session = Session()
         if self.current_user.id not in KeysWords:
-            keyboard = KeysStart
+            keyboard = self.__get__keys_start__()
         else:
-            keyboard = KeysWords[self.current_user.id]
+            keyboard = KeysWords[self.current_user.id]['keyboard']
 
         return [
             TextMessage(text=(
@@ -231,3 +232,29 @@ class viber_bot:
                                         id_difficulty=id_difficulty)
         self.session.add(user_answer)
         self.session.commit()
+
+    def __change__difficulty__message__(self):
+        self.current_user.is_difficulty_need = not self.current_user.is_difficulty_need
+
+        if not self.current_user.is_difficulty_need:
+            message = [TextMessage(text='Жаль что вы не хотите помочь улучшить каество предлагаемых слов (depressed)'),
+                    TextMessage(text='Если вы передумаете - нажмите на ОТМЕЧАТЬ СЛОЖНОСТЬ ПОСЛЕ ОТВЕТА. Спасибо!')]
+        else:
+            message = [TextMessage(text='Спасибо за помощь (yo)')]
+
+        message = message + [KeyboardMessage(keyboard=self.__get__keys_start__())]
+
+        self.session.commit()
+        return message
+
+    def __get__keys_start__(self):
+        if self.current_user.id not in KeysStart:
+            KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
+
+        if self.current_user.is_difficulty_need:
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1]['Text'].\
+                replace('НЕ ', '').replace('ОТМЕЧАТЬ', 'НЕ ОТМЕЧАТЬ')
+        else:
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('НЕ ', '')
+
+        return KeysStart[self.current_user.id]
