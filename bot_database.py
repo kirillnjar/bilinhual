@@ -1,8 +1,6 @@
 from sqlalchemy import create_engine
-from sqlalchemy.sql.expression import func, select
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, scoped_session
-from sqlalchemy import types
 
 Base = declarative_base()
 Engine = create_engine('sqlite:///bot.db', echo=False)
