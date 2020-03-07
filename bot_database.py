@@ -1,9 +1,9 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import psycopg2
 Base = declarative_base()
-Engine = create_engine('postgres://qapondokdkboga:4f7270b7d921454f8950f9ceaaf72dea525ec869544e916fca3898b27ecbac28@ec2-46-137-177-160.eu-west-1.compute.amazonaws.com:5432/d5qbacliastonp', )
+Engine = create_engine('postgres://qapondokdkboga:4f7270b7d921454f8950f9ceaaf72dea525ec869544e916fca3898b27ecbac28@ec2-46-137-177-160.eu-west-1.compute.amazonaws.com:5432/d5qbacliastonp', echo=True)
 Session = scoped_session(sessionmaker(bind=Engine))
 #session = Session()
 
@@ -19,6 +19,7 @@ class bot_users(Base):
     name = Column(name='name', type_=String(length=40), nullable=False)
     repeats_number = Column(name='repeats_number', type_=Integer)
     is_difficulty_need = Column(name='is_difficulty_need', type_=Boolean, nullable=False, default=1)
+    notice_time = Column(name='notice_time', type_=types.Interval)
 
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_users")
 
