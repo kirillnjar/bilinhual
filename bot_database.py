@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 import psycopg2
 Base = declarative_base()
-Engine = create_engine('postgres://qapondokdkboga:4f7270b7d921454f8950f9ceaaf72dea525ec869544e916fca3898b27ecbac28@ec2-46-137-177-160.eu-west-1.compute.amazonaws.com:5432/d5qbacliastonp', echo=False)
+Engine = create_engine('postgres://qapondokdkboga:4f7270b7d921454f8950f9ceaaf72dea525ec869544e916fca3898b27ecbac28@ec2-46-137-177-160.eu-west-1.compute.amazonaws.com:5432/d5qbacliastonp', )
 Session = scoped_session(sessionmaker(bind=Engine))
 #session = Session()
 
@@ -12,13 +12,13 @@ from sqlalchemy import ForeignKey, Column, Integer, String, Boolean, DateTime
 
 
 class bot_users(Base):
-    __tablename__ = 'bot_USERS'
+    __tablename__ = 'bot_users'
 
-    id = Column(name='ID', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    viber_id = Column(name='VIBER_ID', type_=String(length=20), unique=True, nullable=False)
-    name = Column(name='NAME', type_=String(length=40), nullable=False)
-    repeats_number = Column(name='REPEATS_NUMBER', type_=Integer)
-    is_difficulty_need = Column(name='IS_DIFFICULTY_NEED', type_=Boolean, nullable=False, default=1)
+    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    viber_id = Column(name='viber_id', type_=String(length=20), unique=True, nullable=False)
+    name = Column(name='name', type_=String(length=40), nullable=False)
+    repeats_number = Column(name='repeats_number', type_=Integer)
+    is_difficulty_need = Column(name='is_difficulty_need', type_=Boolean, nullable=False, default=1)
 
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_users")
 
@@ -31,11 +31,11 @@ class bot_users(Base):
 
 
 class bot_words(Base):
-    __tablename__ = 'bot_WORDS'
+    __tablename__ = 'bot_words'
 
-    id = Column(name='ID', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    word = Column(name='WORD', type_=String, unique=True, nullable=False)
-    translation = Column(name='TRANSLATION', type_=String, nullable=False)
+    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    word = Column(name='word', type_=String, unique=True, nullable=False)
+    translation = Column(name='translation', type_=String, nullable=False)
     bot_examples = relationship("bot_examples", back_populates="bot_words")
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_words")
 
@@ -52,11 +52,11 @@ class bot_words(Base):
 
 
 class bot_examples(Base):
-    __tablename__ = 'bot_EXAMPLES'
+    __tablename__ = 'bot_examples'
 
     id = Column(name='ID', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    id_word = Column(ForeignKey('bot_WORDS.ID'), name='ID_WORD', type_=Integer, nullable=False)
-    sentence = Column(name='SENTENCE', type_=String, nullable=False)
+    id_word = Column(ForeignKey('bot_words.id'), name='id_word', type_=Integer, nullable=False)
+    sentence = Column(name='sentence', type_=String, nullable=False)
     bot_words = relationship("bot_words", back_populates="bot_examples")
 
     def __repr__(self):
@@ -65,14 +65,14 @@ class bot_examples(Base):
 
 
 class bot_users_answers(Base):
-    __tablename__ = 'bot_USERS_ANSWERS'
+    __tablename__ = 'bot_users_answers'
 
-    id = Column(name='ID', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    id_user = Column(ForeignKey('bot_USERS.ID'), name='ID_USER', type_=Integer, nullable=False)
-    id_word = Column(ForeignKey('bot_WORDS.ID'), name='ID_WORD', type_=Integer, nullable=False)
-    is_right = Column(name='IS_RIGHT', type_=Boolean)
-    answer_date = Column(name='ANSWER_DATE', type_=DateTime)
-    id_difficulty = Column(ForeignKey('bot_DIFFICULTY.ID'), name='ID_DIFFICULTY', type_=Integer, nullable=False)
+    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    id_user = Column(ForeignKey('bot_users.id'), name='id_user', type_=Integer, nullable=False)
+    id_word = Column(ForeignKey('bot_WORDS.id'), name='id_word', type_=Integer, nullable=False)
+    is_right = Column(name='is_right', type_=Boolean)
+    answer_date = Column(name='answer_date', type_=DateTime)
+    id_difficulty = Column(ForeignKey('bot_difficulty.id'), name='id_difficulty', type_=Integer, nullable=False)
 
     bot_users = relationship("bot_users", back_populates="bot_users_answers")
     bot_words = relationship("bot_words", back_populates="bot_users_answers")
@@ -82,10 +82,10 @@ class bot_users_answers(Base):
             .format(self.id, self.id_user, self.id_word, self.is_right, self.answer_date, self.id_difficulty)
 
 class bot_difficulty(Base):
-    __tablename__ = 'bot_DIFFICULTY'
+    __tablename__ = 'bot_difficulty'
 
-    id = Column(name='ID', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    interpretation = Column(name='INTERPRETATION', type_=String, nullable=False)
+    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    interpretation = Column(name='interpretation', type_=String, nullable=False)
 
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_difficulty")
     def __repr__(self):
