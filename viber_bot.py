@@ -99,7 +99,7 @@ class viber_bot:
         if isinstance(viber_request, ViberMessageRequest):
             users = self.session.query(bot_users).filter(bot_users.viber_id == viber_request.sender.id).all()
         else:
-            users = self.session.query(bot_users).filter(bot_users.viber_id == viber_request.user.id).all()func.count
+            users = self.session.query(bot_users).filter(bot_users.viber_id == viber_request.user.id).all()
         if len(users) == 0:
             return None
         else:
