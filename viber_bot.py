@@ -281,7 +281,7 @@ class viber_bot:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
-        if self.current_user.notice_time in None:
+        if self.current_user.notice_time is None:
             self.current_user.notice_time = timedelta(minutes=30)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
         self.session.commit()
