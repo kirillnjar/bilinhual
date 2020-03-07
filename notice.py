@@ -24,7 +24,7 @@ def notice_job():
         bot_users.notice_time, '00:30:00'), bot_users.is_notice_need)) \
         .all()
     for u in us:
-        message = [TextMessage(text=random.choice(hello_messages) + " " + u.name + "Вы не забыли об обучении? "),
+        message = [TextMessage(text=random.choice(hello_messages) + " " + u.name + "! Вы не забыли об обучении? (hmm)"),
                    KeyboardMessage(keyboard=__get__keys_notice__(u))]
         viber.send_messages(u.viber_id, message)
 

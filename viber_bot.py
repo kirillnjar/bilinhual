@@ -285,7 +285,6 @@ class viber_bot:
             self.current_user.notice_time = timedelta(minutes=30)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
         self.session.commit()
-        self.session.close()
         return [TextMessage(text="Будет сделано (eyes)"),
                 KeyboardMessage(keyboard=keyboard)]
 
@@ -305,5 +304,4 @@ class viber_bot:
                  KeyboardMessage(keyboard=keyboard)]
         self.current_user.is_notice_need = not self.current_user.is_notice_need
         self.session.commit()
-        self.session.close()
         return message
