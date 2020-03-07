@@ -41,18 +41,9 @@ class viber_bot:
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
                 elif word.split(' ')[0].lower() == 'taside':
-                    self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
-                    self.__response_message = [TextMessage(text="Будет сделано (eyes)")]
+                    self.__response_message = self.__get__aside__()
                 elif word.split(' ')[0].lower() == 'tdisable':
-                    if self.current_user.is_notice_need:
-                        self.__response_message = \
-                            [TextMessage(text="Включить напоминание можно будет в конце каждого раунда")] \
-                            + self.__help__message__()
-                    else:
-                        self.__response_message = \
-                            [TextMessage(text="Мы обязательно вам напомним!")] \
-                            + self.__help__message__()
-                    self.current_user.is_notice_need = not self.current_user.is_notice_need
+                    self.__response_message = self.__get__disable__()
                 else:
                     self.__response_message = self.__unknown__message__()
             elif word[0] == 'd':
@@ -284,3 +275,31 @@ class viber_bot:
                 KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ВКЛЮЧИТЬ НАПОМИНАНИЯ', 'ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ')
 
         return KeysStart[self.current_user.id]
+
+    def __get__aside__(self):
+        if self.current_user.id not in KeysWords:
+            keyboard = self.__get__keys_start__()
+        else:
+            keyboard = KeysWords[self.current_user.id]['keyboard']
+        if self.current_user.notice_time in None:
+            self.current_user.notice_time = timedelta(minutes=30)
+        self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
+        return [TextMessage(text="Будет сделано (eyes)"),
+                KeyboardMessage(keyboard=keyboard)]
+
+    def __get__disable__(self):
+
+        if self.current_user.id not in KeysWords:
+            keyboard = self.__get__keys_start__()
+        else:
+            keyboard = KeysWords[self.current_user.id]['keyboard']
+        if self.current_user.is_notice_need:
+            message = \
+                [TextMessage(text="Включить напоминание можно будет в конце каждого раунда"),
+                 KeyboardMessage(keyboard=keyboard)]
+        else:
+            message = \
+                [TextMessage(text="Мы обязательно вам напомним!"),
+                 KeyboardMessage(keyboard=keyboard)]
+        self.current_user.is_notice_need = not self.current_user.is_notice_need
+        return message
