@@ -1,0 +1,33 @@
+{
+      "Type":"keyboard",
+      "Buttons":[
+         {
+            "Columns": 6,
+	        "Rows": 1,
+            "ActionBody":"/start",
+            "Text": "<font color=\"#494E67\" size=\"10\"><b>ПРОДОЛЖИТЬ ИГРУ</b></font>",				
+			"TextSize": "medium",
+			"TextHAlign": "center",
+			"TextVAlign": "center",
+			"BgColor": "#f7bb3f"
+		}, {
+            "Columns": 6,
+	        "Rows": 1,
+            "ActionBody":"/taside",
+            "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>НАПОМНИТЬ ЧЕРЕЗ 30 МИНУТ</b></font>",
+			"TextSize": "medium",
+			"TextHAlign": "center",
+			"TextVAlign": "center",
+			"BgColor": "#ff9900"
+		}, {
+            "Columns": 6,
+	        "Rows": 1,
+            "ActionBody":"/tdisable",
+            "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>ОТКАЗАТЬ ОТ НАПОМИНАНИЯ</b></font>",
+			"TextSize": "medium",
+			"TextHAlign": "center",
+			"TextVAlign": "center",
+			"BgColor": "#ff2e00"
+		}
+      ]
+}
