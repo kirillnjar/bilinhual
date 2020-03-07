@@ -22,7 +22,7 @@ def notice_job():
         .all()
     for u in us:
         message = [TextMessage(text="Тест 1. Сообщение отправлено автоматически"),
-                   KeyboardMessage(keyboard=json.load(open('start_keyboard.json', encoding='utf-8')))]
+                   KeyboardMessage(keyboard=json.load(open('notice_keyboard.json', encoding='utf-8')))]
         viber.send_messages(u.viber_id, message)
 
 

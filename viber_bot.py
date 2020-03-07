@@ -38,6 +38,10 @@ class viber_bot:
                     self.__response_message = self.__change__difficulty__message__()
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
+                elif word.split(' ')[0].lower() == 'taside':
+                    self.current_user.notice_time = self.current_user.notice_time + '00:30:00'
+                elif word.split(' ')[0].lower() == 'tdisable':
+                    self.current_user.notice_time = self.current_user.notice_time + '00:00:00'
                 else:
                     self.__response_message = self.__unknown__message__()
             elif word[0] == 'd':
