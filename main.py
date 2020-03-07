@@ -1,7 +1,7 @@
 from flask import Flask, request, Response
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
-
+import os
 from viber_bot import viber_bot
 
 app = Flask(__name__)
@@ -29,4 +29,5 @@ def incoming():
 
 
 if __name__ == "__main__":
-    app.run(host='localhost', debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
