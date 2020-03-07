@@ -14,7 +14,7 @@
             "Columns": 6,
 	        "Rows": 1,
             "ActionBody":"/taside",
-            "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>НАПОМНИТЬ ЧЕРЕЗ 30 МИНУТ</b></font>",
+            "Text": "<font color=\"#494E67\" size=\"10\"><b>НАПОМНИТЬ ЧЕРЕЗ 30 МИНУТ</b></font>",
 			"TextSize": "medium",
 			"TextHAlign": "center",
 			"TextVAlign": "center",
