@@ -19,7 +19,7 @@ class bot_users(Base):
     name = Column(name='name', type_=String(length=40), nullable=False)
     repeats_number = Column(name='repeats_number', type_=Integer)
     is_difficulty_need = Column(name='is_difficulty_need', type_=Boolean, nullable=False, default=1)
-    is_notice_need = Column(name='is_difficulty_need', type_=Boolean, nullable=False, default=1)
+    is_notice_need = Column(name='is_notice_need', type_=Boolean, nullable=False, default=1)
     notice_time = Column(name='notice_time', type_=types.Interval)
 
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_users")
