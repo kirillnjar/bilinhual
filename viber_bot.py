@@ -1,4 +1,4 @@
-from sqlalchemy import func
+from sqlalchemy import func, types
 from viberbot.api.messages import PictureMessage, KeyboardMessage
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.viber_requests import ViberMessageRequest
