@@ -1,3 +1,4 @@
 viberbot
 sqlalchemy
 flask
+psycopg2
