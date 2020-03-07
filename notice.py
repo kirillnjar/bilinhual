@@ -8,7 +8,8 @@ from main import viber
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', minutes=15)
+
+@sched.scheduled_job('interval', minutes=1)
 def notice_job():
     session = Session()
     us = session.query(bot_users) \
@@ -20,5 +21,6 @@ def notice_job():
     for u in us:
         message = [TextMessage(text="Тест 1. Сообщение отправлено автоматически")]
         viber.send_messages(u.viber_id, message)
+
 
 sched.start()
