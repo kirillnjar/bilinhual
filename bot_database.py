@@ -54,7 +54,7 @@ class bot_words(Base):
 class bot_examples(Base):
     __tablename__ = 'bot_examples'
 
-    id = Column(name='ID', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
+    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
     id_word = Column(ForeignKey('bot_words.id'), name='id_word', type_=Integer, nullable=False)
     sentence = Column(name='sentence', type_=String, nullable=False)
     bot_words = relationship("bot_words", back_populates="bot_examples")
