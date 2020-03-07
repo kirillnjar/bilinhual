@@ -276,4 +276,11 @@ class viber_bot:
             KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
                 'Text'].replace('НЕ ', '')
 
+        if self.current_user.is_notice_need:
+            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ', 'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
+        else:
+            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ВКЛЮЧИТЬ НАПОМИНАНИЯ', 'ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ')
+
         return KeysStart[self.current_user.id]
