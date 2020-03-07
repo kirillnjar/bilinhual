@@ -69,7 +69,7 @@ class bot_users_answers(Base):
 
     id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
     id_user = Column(ForeignKey('bot_users.id'), name='id_user', type_=Integer, nullable=False)
-    id_word = Column(ForeignKey('bot_WORDS.id'), name='id_word', type_=Integer, nullable=False)
+    id_word = Column(ForeignKey('bot_words.id'), name='id_word', type_=Integer, nullable=False)
     is_right = Column(name='is_right', type_=Boolean)
     answer_date = Column(name='answer_date', type_=DateTime)
     id_difficulty = Column(ForeignKey('bot_difficulty.id'), name='id_difficulty', type_=Integer, nullable=False)
@@ -90,7 +90,6 @@ class bot_difficulty(Base):
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_difficulty")
     def __repr__(self):
         return "<Difficulty(id={}, interpretation={})>".format(self.id, self.interpretation)
-        pass
 
 
 
