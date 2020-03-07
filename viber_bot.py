@@ -42,14 +42,16 @@ class viber_bot:
                     self.__response_message = self.__example_message__()
                 elif word.split(' ')[0].lower() == 'taside':
                     self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
-                    self.__response_message = [TextMessage("Будет сделано (eyes)")]
+                    self.__response_message = [TextMessage(text="Будет сделано (eyes)")]
                 elif word.split(' ')[0].lower() == 'tdisable':
                     if self.current_user.is_notice_need:
-                        self.__response_message = [TextMessage("Включить напоминание можно будет в конце каждого раунда")] \
-                                                  + self.__help__message__()
+                        self.__response_message = \
+                            [TextMessage(text="Включить напоминание можно будет в конце каждого раунда")] \
+                            + self.__help__message__()
                     else:
-                        self.__response_message = [TextMessage("Мы обязательно вам напомним!")] \
-                                                  + self.__help__message__()
+                        self.__response_message = \
+                            [TextMessage(text="Мы обязательно вам напомним!")] \
+                            + self.__help__message__()
                     self.current_user.is_notice_need = not self.current_user.is_notice_need
                 else:
                     self.__response_message = self.__unknown__message__()
@@ -253,7 +255,7 @@ class viber_bot:
 
         if not self.current_user.is_difficulty_need:
             message = [TextMessage(text='Жаль что вы не хотите помочь улучшить каество предлагаемых слов (depressed)'),
-                    TextMessage(text='Если вы передумаете - нажмите на ОТМЕЧАТЬ СЛОЖНОСТЬ ПОСЛЕ ОТВЕТА. Спасибо!')]
+                       TextMessage(text='Если вы передумаете - нажмите на ОТМЕЧАТЬ СЛОЖНОСТЬ ПОСЛЕ ОТВЕТА. Спасибо!')]
         else:
             message = [TextMessage(text='Спасибо за помощь (yo)')]
 
@@ -267,9 +269,11 @@ class viber_bot:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
         if self.current_user.is_difficulty_need:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1]['Text'].\
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
+                'Text']. \
                 replace('НЕ ', '').replace('ОТМЕЧАТЬ', 'НЕ ОТМЕЧАТЬ')
         else:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('НЕ ', '')
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
+                'Text'].replace('НЕ ', '')
 
         return KeysStart[self.current_user.id]
