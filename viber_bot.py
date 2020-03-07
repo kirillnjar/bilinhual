@@ -1,4 +1,4 @@
-from datetime import time, datetime
+from datetime import time, datetime, timedelta
 
 from sqlalchemy import func, types
 from viberbot.api.messages import PictureMessage, KeyboardMessage
@@ -41,10 +41,16 @@ class viber_bot:
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
                 elif word.split(' ')[0].lower() == 'taside':
-                    self.current_user.notice_time = self.current_user.notice_time + datetime.timedelta(0, 1800)
+                    self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
+                    self.__response_message = [TextMessage("Будет сделано (eyes)")]
                 elif word.split(' ')[0].lower() == 'tdisable':
-                    self.current_user.notice_time = '00:00:00'
-                    self.__response_message = [TextMessage("Включить напоминание можно будет в конце каждого раунда")] + self.__help__message__()
+                    if self.current_user.is_notice_need:
+                        self.__response_message = [TextMessage("Включить напоминание можно будет в конце каждого раунда")] \
+                                                  + self.__help__message__()
+                    else:
+                        self.__response_message = [TextMessage("Мы обязательно вам напомним!")] \
+                                                  + self.__help__message__()
+                    self.current_user.is_notice_need = not self.current_user.is_notice_need
                 else:
                     self.__response_message = self.__unknown__message__()
             elif word[0] == 'd':
@@ -98,6 +104,7 @@ class viber_bot:
 
     # сообщение помощи
     def __help__message__(self):
+        self.current_user.notice_time = None
         return [TextMessage(text='Чтобы начать изучение - нажми на СТАРТ'),
                 KeyboardMessage(keyboard=self.__get__keys_start__())]
 
