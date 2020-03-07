@@ -23,7 +23,7 @@
             "Columns": 6,
 	        "Rows": 1,
             "ActionBody":"/tdisable",
-            "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>ОТКАЗАТЬ ОТ НАПОМИНАНИЯ</b></font>",
+            "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ</b></font>",
 			"TextSize": "medium",
 			"TextHAlign": "center",
 			"TextVAlign": "center",
