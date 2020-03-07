@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, scoped_session
 
 Base = declarative_base()
-Engine = create_engine('sqlite:///bot.db', echo=False)
+Engine = create_engine('postgres://qapondokdkboga:4f7270b7d921454f8950f9ceaaf72dea525ec869544e916fca3898b27ecbac28@ec2-46-137-177-160.eu-west-1.compute.amazonaws.com:5432/d5qbacliastonp', echo=False)
 Session = scoped_session(sessionmaker(bind=Engine))
 #session = Session()
 
