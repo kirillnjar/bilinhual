@@ -1,4 +1,4 @@
-from datetime import time
+from datetime import time, datetime
 
 from sqlalchemy import func, types
 from viberbot.api.messages import PictureMessage, KeyboardMessage
@@ -41,9 +41,10 @@ class viber_bot:
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
                 elif word.split(' ')[0].lower() == 'taside':
-                    self.current_user.notice_time = self.current_user.notice_time + time.strftime('00:30:00')
+                    self.current_user.notice_time = self.current_user.notice_time + datetime.timedelta(0, 1800)
                 elif word.split(' ')[0].lower() == 'tdisable':
                     self.current_user.notice_time = '00:00:00'
+                    self.__response_message = [TextMessage("Включить напоминание можно будет в конце каждого раунда")] + self.__help__message__()
                 else:
                     self.__response_message = self.__unknown__message__()
             elif word[0] == 'd':
