@@ -279,8 +279,8 @@ class viber_bot:
                 TextMessage(text='Транскрипция этого слова - ' + KeysWords[self.current_user.id]['right_transcription']),
                 TextMessage(text='Загрузка воспроизведения слова может занять какое-то время. Пожалуйста ожидайте.'),
                 FileMessage(
-                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(KeysWords[self.current_user.id].word),
-                    file_name='{}.mp3'.format(KeysWords[self.current_user.id].word),
+                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(KeysWords[self.current_user.id]['right_answer'].word),
+                    file_name='{}.mp3'.format(KeysWords[self.current_user.id]['right_answer'].word),
                     size=5120
                     ),
                 KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
