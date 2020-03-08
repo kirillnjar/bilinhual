@@ -174,7 +174,7 @@ class viber_bot:
                 TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 TextMessage(text='Удачи!(moa)'),
                 FileMessage(media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={words[right_answer_index].word}tl=ru&client=tw-ob',
-                            file_name='{words[right_answer_index].word}.mp3')
+                            file_name='{words[right_answer_index].word}.mp3'),
                 KeyboardMessage(keyboard=KeysNewWord)]
 
     def __answer_message__(self, answer_index):
