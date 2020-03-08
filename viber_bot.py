@@ -168,7 +168,7 @@ class viber_bot:
 
         # обрабокта законена. подтверждаем транзакцию
         self.session.commit()
-        print('https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}tl=ru&client=tw-ob'.format(
+        print('https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(
             words[right_answer_index].word))
         print('{}.mp3'.format(words[right_answer_index].word))
         # задаем вопрос
@@ -176,7 +176,7 @@ class viber_bot:
                 TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 TextMessage(text='Удачи!(moa)'),
                 FileMessage(
-                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}tl=ru&client=tw-ob'.format(words[right_answer_index].word),
+                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(words[right_answer_index].word),
                     file_name='{}.mp3'.format(words[right_answer_index].word),
                     size=5120
                     ),
