@@ -229,7 +229,7 @@ class viber_bot:
 
         # Возвращаем сообщение с примеров
         return [TextMessage(
-            text=message_text)] + self.__sym_message__()
+            text=message_text)] + self.__hints_message__()
 
     def __save__answer__(self):
         # Добавляем ответ в базу
@@ -295,7 +295,7 @@ class viber_bot:
                 file_name='{}.mp3'.format(KeysWords[self.current_user.id]['right_answer'].word),
                 size=5120
             )
-            ] + self.__sym_message__()
+            ] + self.__hints_message__()
 
     def __hints_message__(self):
         keyboard = json.load(open('hint_keyboard.json', encoding='utf-8'))
@@ -308,7 +308,7 @@ class viber_bot:
         # Если примеры кончились
         if len(KeysWords[self.current_user.id]['syms']) == 0:
             return [TextMessage(
-                text='Синонимы кончились (sad)')] + self.__sym_message__()
+                text='Синонимы кончились (sad)')] + self.__hints_message__()
 
         # Выбираем случайный пример
         message_text = random.choice(KeysWords[self.current_user.id]['syms'])
@@ -319,4 +319,4 @@ class viber_bot:
         # Возвращаем сообщение с примеров
         return [TextMessage(
             text=message_text)
-            ] + self.__sym_message__()
+            ] + self.__hints_message__()
