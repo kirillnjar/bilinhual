@@ -276,7 +276,7 @@ class viber_bot:
 
     def __get__tts__(self):
         return [
-                TextMessage(text='Транскрипция этого слова - ' + KeysWords[self.current_user.id].right_transcription),
+                TextMessage(text='Транскрипция этого слова - ' + KeysWords[self.current_user.id]['right_transcription']),
                 TextMessage(text='Загрузка воспроизведения слова может занять какое-то время. Пожалуйста ожидайте.'),
                 FileMessage(
                     media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(KeysWords[self.current_user.id].word),
