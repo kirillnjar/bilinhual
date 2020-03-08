@@ -168,14 +168,19 @@ class viber_bot:
 
         # обрабокта законена. подтверждаем транзакцию
         self.session.commit()
-
+        print('https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}tl=ru&client=tw-ob'.format(
+            words[right_answer_index].word))
+        print('{}.mp3'.format(words[right_answer_index].word))
         # задаем вопрос
-        return [TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
+        return (TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
                 TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 TextMessage(text='Удачи!(moa)'),
-                FileMessage(media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={words[right_answer_index].word}tl=ru&client=tw-ob',
-                            file_name='{words[right_answer_index].word}.mp3'),
-                KeyboardMessage(keyboard=KeysNewWord)]
+                FileMessage(
+                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}tl=ru&client=tw-ob'.format(words[right_answer_index].word),
+                    file_name='{}.mp3'.format(words[right_answer_index].word),
+                    size=5120
+                    ),
+                KeyboardMessage(keyboard=KeysNewWord))
 
     def __answer_message__(self, answer_index):
         if self.current_user.id not in KeysWords:
