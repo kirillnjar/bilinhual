@@ -1,7 +1,7 @@
 from datetime import time, datetime, timedelta
 from yandex_dictionary import YandexDictionary
 from sqlalchemy import func, types
-from viberbot.api.messages import PictureMessage, KeyboardMessage
+from viberbot.api.messages import PictureMessage, KeyboardMessage, FileMessage
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.viber_requests import ViberMessageRequest
 from viberbot.api.viber_requests import ViberSubscribedRequest
@@ -173,6 +173,8 @@ class viber_bot:
         return [TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
                 TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 TextMessage(text='Удачи!(moa)'),
+                FileMessage(media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={words[right_answer_index].word}tl=ru&client=tw-ob',
+                            file_name='{words[right_answer_index].word}.mp3')
                 KeyboardMessage(keyboard=KeysNewWord)]
 
     def __answer_message__(self, answer_index):
