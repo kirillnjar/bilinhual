@@ -17,8 +17,6 @@ class bot_users(Base):
     id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
     viber_id = Column(name='viber_id', type_=String(length=20), unique=True, nullable=False)
     name = Column(name='name', type_=String(length=40), nullable=False)
-    repeats_number = Column(name='repeats_number', type_=Integer)
-    is_difficulty_need = Column(name='is_difficulty_need', type_=Boolean, nullable=False, default=1)
     is_notice_need = Column(name='is_notice_need', type_=Boolean, nullable=False, default=1)
     notice_time = Column(name='notice_time', type_=types.Interval)
 
@@ -37,8 +35,6 @@ class bot_words(Base):
 
     id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
     word = Column(name='word', type_=String, unique=True, nullable=False)
-    translation = Column(name='translation', type_=String, nullable=False)
-    bot_examples = relationship("bot_examples", back_populates="bot_words")
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_words")
 
     def __repr__(self):
@@ -52,20 +48,6 @@ class bot_words(Base):
             return "<Words(id={}, word={}, translation={}, examples={})>".format(self.id, self.word,
                                                                                  self.translation, self.bot_examples)
 
-
-class bot_examples(Base):
-    __tablename__ = 'bot_examples'
-
-    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    id_word = Column(ForeignKey('bot_words.id'), name='id_word', type_=Integer, nullable=False)
-    sentence = Column(name='sentence', type_=String, nullable=False)
-    bot_words = relationship("bot_words", back_populates="bot_examples")
-
-    def __repr__(self):
-        return "<Examples(id={}, word={}, sentence={})>".format(self.id, self.bot_words,
-                                                                self.sentence)
-
-
 class bot_users_answers(Base):
     __tablename__ = 'bot_users_answers'
 
@@ -74,7 +56,6 @@ class bot_users_answers(Base):
     id_word = Column(ForeignKey('bot_words.id'), name='id_word', type_=Integer, nullable=False)
     is_right = Column(name='is_right', type_=Boolean)
     answer_date = Column(name='answer_date', type_=DateTime)
-    id_difficulty = Column(ForeignKey('bot_difficulty.id'), name='id_difficulty', type_=Integer, nullable=False)
 
     bot_users = relationship("bot_users", back_populates="bot_users_answers")
     bot_words = relationship("bot_words", back_populates="bot_users_answers")
@@ -83,15 +64,6 @@ class bot_users_answers(Base):
         return "<Answers(id={}, word={}, sentence={}, id_word={}, is_right={}, is_right={}, answer_date={}, id_difficulty={})>"\
             .format(self.id, self.id_user, self.id_word, self.is_right, self.answer_date, self.id_difficulty)
 
-class bot_difficulty(Base):
-    __tablename__ = 'bot_difficulty'
-
-    id = Column(name='id', type_=Integer, primary_key=True, autoincrement=True, unique=True, nullable=False)
-    interpretation = Column(name='interpretation', type_=String, nullable=False)
-
-    bot_users_answers = relationship("bot_users_answers", back_populates="bot_difficulty")
-    def __repr__(self):
-        return "<Difficulty(id={}, interpretation={})>".format(self.id, self.interpretation)
 
 
 
