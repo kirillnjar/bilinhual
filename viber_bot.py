@@ -146,17 +146,18 @@ class viber_bot:
 
         # выбираем индекс правильного ответа
         right_answer_index = random.choice(range(0, 4))
-        right_word_info = translater.lookup(words[right_answer_index].word, 'en', 'ru')['def'][0]
+        right_word_info = json.loads(translater.lookup(words[right_answer_index].word, 'en', 'ru'))['def'][0]
 
         # создаем клавиатуру
         for i in range(0,4):
             if i == right_answer_index:
-                KeysNewWord['Buttons'][1]['Text'] = right_word_info['text']
+                KeysNewWord['Buttons'][1]['Text'] = right_word_info['tr'][0]['text'].capitalize()
             else:
-                KeysNewWord['Buttons'][i]['Text'] = translater.lookup(words[i].word, 'en', 'ru')['def'][0]['text'].capitalize()
+                KeysNewWord['Buttons'][i]['Text'] = \
+                    json.loads(translater.lookup(words[i].word, 'en', 'ru'))['def'][0]['tr'][0]['text'].capitalize()
 
         sentence = []
-        for ex in right_word_info['ex']:
+        for ex in right_word_info['tr'][0]['ex']:
             sentence.append(ex['text'].capitalize())
 
         # сохраняем данные о текущем вопросе

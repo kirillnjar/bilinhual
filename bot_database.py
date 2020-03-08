@@ -59,7 +59,6 @@ class bot_users_answers(Base):
 
     bot_users = relationship("bot_users", back_populates="bot_users_answers")
     bot_words = relationship("bot_words", back_populates="bot_users_answers")
-    bot_difficulty = relationship("bot_difficulty", back_populates="bot_users_answers")
     def __repr__(self):
         return "<Answers(id={}, word={}, sentence={}, id_word={}, is_right={}, is_right={}, answer_date={}, id_difficulty={})>"\
             .format(self.id, self.id_user, self.id_word, self.is_right, self.answer_date, self.id_difficulty)
