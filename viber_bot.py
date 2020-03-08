@@ -166,19 +166,17 @@ class viber_bot:
         # сохраняем данные о текущем вопросе
         KeysWords[self.current_user.id] = dict(right_answer=words[right_answer_index],
                                                right_translation=right_word_info['tr'][0]['text'].capitalize(),
+                                               right_transcription=right_word_info['ts'],
                                                right_answer_index=right_answer_index, keyboard=KeysNewWord,
                                                examples=sentence, is_right=False)
 
         # обрабокта законена. подтверждаем транзакцию
         self.session.commit()
-        print('https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(
-            words[right_answer_index].word))
-        print('{}.mp3'.format(words[right_answer_index].word))
         # задаем вопрос
-        return (TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
+        return [TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
                 TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 TextMessage(text='Удачи!(moa)'),
-                KeyboardMessage(keyboard=KeysNewWord))
+                KeyboardMessage(keyboard=KeysNewWord)]
 
     def __answer_message__(self, answer_index):
         if self.current_user.id not in KeysWords:
@@ -278,8 +276,11 @@ class viber_bot:
 
     def __get__tts__(self):
         return [
+                TextMessage(text='Транскрипция этого слова - ' + KeysWords[self.current_user.id].right_transcription),
+                TextMessage(text='Загрузка воспроизведения слова может занять какое-то время. Пожалуйста ожидайте.'),
                 FileMessage(
                     media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(KeysWords[self.current_user.id].word),
                     file_name='{}.mp3'.format(KeysWords[self.current_user.id].word),
                     size=5120
-                    )]
+                    ),
+                KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
