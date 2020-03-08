@@ -299,7 +299,7 @@ class viber_bot:
             KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
 
     def __hints_message__(self):
-        keyboard = json.loads(open('hint_keyboard.json', encoding='utf-8'))
+        keyboard = json.load(open('hint_keyboard.json', encoding='utf-8'))
         return [KeyboardMessage(keyboard=keyboard), ]
 
     def __backhints_message__(self):
