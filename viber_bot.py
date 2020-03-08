@@ -45,7 +45,7 @@ class viber_bot:
                     self.__response_message = self.__backhints_message__()
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
-                elif word.split(' ')[0].lower() == 'sym':
+                elif word.split(' ')[0].lower() == 'syn':
                     self.__response_message = self.__sym_message__()
                 elif word.split(' ')[0].lower() == 'taside':
                     self.__response_message = self.__get__aside__()
@@ -230,7 +230,7 @@ class viber_bot:
         # Возвращаем сообщение с примеров
         return [TextMessage(
             text=message_text),
-            KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
+            self.__backhints_message__()]
 
     def __save__answer__(self):
         # Добавляем ответ в базу
@@ -296,7 +296,7 @@ class viber_bot:
                 file_name='{}.mp3'.format(KeysWords[self.current_user.id]['right_answer'].word),
                 size=5120
             ),
-            KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
+            self.__backhints_message__()]
 
     def __hints_message__(self):
         keyboard = json.load(open('hint_keyboard.json', encoding='utf-8'))
