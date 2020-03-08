@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2284689a-ea8c-418b-bcad-83addded6c44" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/viber_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/viber_bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/word_keyboard.json" beforeDir="false" afterPath="$PROJECT_DIR$/word_keyboard.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,6 +27,11 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="pyconsole" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\YandexDisk\UniverDisk\8 семестр\Кросс-платформенные средства разработки программного обеспечения\bilinhual" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">

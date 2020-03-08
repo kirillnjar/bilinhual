@@ -16,6 +16,8 @@ KeysStart = dict()
 KeysWords = dict()
 
 translater = YandexDictionary('dict.1.1.20200220T183914Z.ad078cb041516bce.6b3e7e48c087bb3b3f18013a1f8e0a05acbf9ac4')
+
+
 class viber_bot:
     __unknown_messages_collection = ['Не понимаю о чем ты говоришь', 'Данная информация не может быть мною распознана',
                                      'Критическая ошибка в программе. Соощение ошибки: "Убить всех человеков"']
@@ -37,8 +39,14 @@ class viber_bot:
                     self.__response_message = self.__help__message__()
                 elif word.split(' ')[0].lower() == 'start':
                     self.__response_message = self.__new__word__message__(True)
+                elif word.split(' ')[0].lower() == 'hint':
+                    self.__response_message = self.__hints_message__()
+                elif word.split(' ')[0].lower() == 'backhint':
+                    self.__response_message = self.__backhints_message__()
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
+                elif word.split(' ')[0].lower() == 'sym':
+                    self.__response_message = self.__sym_message__()
                 elif word.split(' ')[0].lower() == 'taside':
                     self.__response_message = self.__get__aside__()
                 elif word.split(' ')[0].lower() == 'tdisable':
@@ -152,7 +160,7 @@ class viber_bot:
         right_word_info = json.loads(translater.lookup(words[right_answer_index].word, 'en', 'ru'))['def'][0]
 
         # создаем клавиатуру
-        for i in range(0,4):
+        for i in range(0, 4):
             if i == right_answer_index:
                 KeysNewWord['Buttons'][right_answer_index]['Text'] = right_word_info['tr'][0]['text'].capitalize()
             else:
@@ -163,11 +171,16 @@ class viber_bot:
         for ex in right_word_info['tr'][0]['ex']:
             sentence.append(ex['text'].capitalize())
 
+        syms = []
+        for sym in right_word_info['tr'][0]['mean']:
+            syms.append(sym['text'].capitalize())
+
         # сохраняем данные о текущем вопросе
         KeysWords[self.current_user.id] = dict(right_answer=words[right_answer_index],
                                                right_translation=right_word_info['tr'][0]['text'].capitalize(),
                                                right_transcription=right_word_info['ts'],
                                                right_answer_index=right_answer_index, keyboard=KeysNewWord,
+                                               sym=syms,
                                                examples=sentence, is_right=False)
 
         # обрабокта законена. подтверждаем транзакцию
@@ -245,7 +258,7 @@ class viber_bot:
         return KeysStart[self.current_user.id]
 
     def __get__aside__(self):
-        if self.current_user.id not in KeysWords:
+        if self.session.query(bot_users_answers).count() % 10 == 0 or self.current_user.id not in KeysWords:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
@@ -257,8 +270,7 @@ class viber_bot:
                 KeyboardMessage(keyboard=keyboard)]
 
     def __get__disable__(self):
-
-        if self.current_user.id not in KeysWords:
+        if self.session.query(bot_users_answers).count() % 10 == 0 or self.current_user.id not in KeysWords:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
@@ -276,11 +288,37 @@ class viber_bot:
 
     def __get__tts__(self):
         return [
-                TextMessage(text='Транскрипция этого слова - ' + KeysWords[self.current_user.id]['right_transcription']),
-                TextMessage(text='Загрузка воспроизведения слова может занять какое-то время. Пожалуйста ожидайте.'),
-                FileMessage(
-                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(KeysWords[self.current_user.id]['right_answer'].word),
-                    file_name='{}.mp3'.format(KeysWords[self.current_user.id]['right_answer'].word),
-                    size=5120
-                    ),
-                KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
+            TextMessage(text='Транскрипция этого слова - ' + KeysWords[self.current_user.id]['right_transcription']),
+            TextMessage(text='Загрузка воспроизведения слова может занять какое-то время. Пожалуйста ожидайте.'),
+            FileMessage(
+                media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(
+                    KeysWords[self.current_user.id]['right_answer'].word),
+                file_name='{}.mp3'.format(KeysWords[self.current_user.id]['right_answer'].word),
+                size=5120
+            ),
+            KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
+
+    def __hints_message__(self):
+        keyboard = json.loads(open('hint_keyboard.json', encoding='utf-8'))
+        return [KeyboardMessage(keyboard=keyboard), ]
+
+    def __backhints_message__(self):
+        return [KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
+
+    def __sym_message__(self):
+        # Если примеры кончились
+        if len(KeysWords[self.current_user.id]['syms']) == 0:
+            return [TextMessage(
+                text='Синонимы кончились (sad)'),
+                self.__backhints_message__()]
+
+        # Выбираем случайный пример
+        message_text = random.choice(KeysWords[self.current_user.id]['syms'])
+
+        # Удаляем полученный пример
+        KeysWords[self.current_user.id]['syms'].remove(message_text)
+
+        # Возвращаем сообщение с примеров
+        return [TextMessage(
+            text=message_text),
+            self.__backhints_message__()]

@@ -29,16 +29,8 @@
             "Columns": 6,
 	        "Rows": 1,
 	        "BgColor": "#FFC6C6",
-            "ActionBody":"/example",
-            "Text":"<font color=\"#494E67\" size=\"10\"><b>Пример использования</b></font>"
-			
-         },{
-            "Columns": 6,
-	        "Rows": 1,
-	        "BgColor": "#FFC6C6",
-            "ActionBody":"/tts",
-            "Text":"<font color=\"#494E67\" size=\"10\"><b>Прослушать слово</b></font>"
-
+            "ActionBody":"/hint",
+            "Text":"<font color=\"#494E67\" size=\"10\"><b>Подсказки</b></font>"
          }
 
       ]
