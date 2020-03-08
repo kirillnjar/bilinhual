@@ -180,7 +180,7 @@ class viber_bot:
                                                right_translation=right_word_info['tr'][0]['text'].capitalize(),
                                                right_transcription=right_word_info['ts'],
                                                right_answer_index=right_answer_index, keyboard=KeysNewWord,
-                                               sym=syms,
+                                               syms=syms,
                                                examples=sentence, is_right=False)
 
         # обрабокта законена. подтверждаем транзакцию
