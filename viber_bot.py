@@ -218,8 +218,7 @@ class viber_bot:
         # Если примеры кончились
         if len(KeysWords[self.current_user.id]['examples']) == 0:
             return [TextMessage(
-                text='Примеры кончились (sad)'),
-                KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
+                text='Примеры кончились (sad)')] + + self.__hints_message__()
 
         # Выбираем случайный пример
         message_text = random.choice(KeysWords[self.current_user.id]['examples'])
