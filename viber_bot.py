@@ -101,7 +101,6 @@ class viber_bot:
 
     # сообщение помощи
     def __help__message__(self):
-        self.current_user.notice_time = None
         self.session.commit()
         return [TextMessage(text='Чтобы начать изучение - нажми на СТАРТ'),
                 KeyboardMessage(keyboard=self.__get__keys_start__())]
@@ -244,7 +243,7 @@ class viber_bot:
         if self.current_user.id not in KeysStart:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
-        if self.current_user.is_notice_need:
+        if not self.current_user.is_notice_need:
             KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
                 KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ',
                                                                               'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
