@@ -1,15 +1,16 @@
-from datetime import time, datetime, timedelta
-from yandex_dictionary import YandexDictionary
-from sqlalchemy import func, types
+# Бот
+import json
+import random
+from datetime import timedelta
+
+from sqlalchemy import func
 from viberbot.api.messages import PictureMessage, KeyboardMessage, FileMessage
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.viber_requests import ViberMessageRequest
 from viberbot.api.viber_requests import ViberSubscribedRequest
-import random
 
-# Бот
-import json
 from bot_database import *
+from yandex_dictionary import YandexDictionary
 
 KeysStart = dict()
 KeysWords = dict()
@@ -172,16 +173,17 @@ class viber_bot:
             words[right_answer_index].word))
         print('{}.mp3'.format(words[right_answer_index].word))
         # задаем вопрос
-        return (TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
-                TextMessage(text='Вариатны перевода представлены на клавиатуре'),
-                TextMessage(text='Удачи!(moa)'),
+        return [
                 FileMessage(
                     media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(words[right_answer_index].word),
                     file_name='{}.mp3'.format(words[right_answer_index].word),
                     size=5120
-                    ),
+                    )]
+        """return (TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
+                TextMessage(text='Вариатны перевода представлены на клавиатуре'),
+                TextMessage(text='Удачи!(moa)'),
                 KeyboardMessage(keyboard=KeysNewWord))
-
+"""
     def __answer_message__(self, answer_index):
         if self.current_user.id not in KeysWords:
             return self.__unknown__message__()
