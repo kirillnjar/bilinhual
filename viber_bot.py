@@ -43,6 +43,8 @@ class viber_bot:
                     self.__response_message = self.__get__aside__()
                 elif word.split(' ')[0].lower() == 'tdisable':
                     self.__response_message = self.__get__disable__()
+                elif word.split(' ')[0].lower() == 'tts':
+                    self.__response_message = self.__get__tts__()
                 else:
                     self.__response_message = self.__unknown__message__()
             elif word in ['1', '2', '3', '4']:
@@ -173,17 +175,11 @@ class viber_bot:
             words[right_answer_index].word))
         print('{}.mp3'.format(words[right_answer_index].word))
         # задаем вопрос
-        return [
-                FileMessage(
-                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(words[right_answer_index].word),
-                    file_name='{}.mp3'.format(words[right_answer_index].word),
-                    size=5120
-                    )]
-        """return (TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
+        return (TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
                 TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 TextMessage(text='Удачи!(moa)'),
                 KeyboardMessage(keyboard=KeysNewWord))
-"""
+
     def __answer_message__(self, answer_index):
         if self.current_user.id not in KeysWords:
             return self.__unknown__message__()
@@ -279,3 +275,11 @@ class viber_bot:
         self.current_user.is_notice_need = not self.current_user.is_notice_need
         self.session.commit()
         return message
+
+    def __get__tts__(self):
+        return [
+                FileMessage(
+                    media='https://translate.google.com.vn/translate_tts?ie=UTF-8&q={}&tl=en&client=tw-ob'.format(KeysWords[self.current_user.id].word),
+                    file_name='{}.mp3'.format(KeysWords[self.current_user.id].word),
+                    size=5120
+                    )]
