@@ -151,7 +151,7 @@ class viber_bot:
         # создаем клавиатуру
         for i in range(0,4):
             if i == right_answer_index:
-                KeysNewWord['Buttons'][1]['Text'] = right_word_info['tr'][0]['text'].capitalize()
+                KeysNewWord['Buttons'][right_answer_index]['Text'] = right_word_info['tr'][0]['text'].capitalize()
             else:
                 KeysNewWord['Buttons'][i]['Text'] = \
                     json.loads(translater.lookup(words[i].word, 'en', 'ru'))['def'][0]['tr'][0]['text'].capitalize()
@@ -162,6 +162,7 @@ class viber_bot:
 
         # сохраняем данные о текущем вопросе
         KeysWords[self.current_user.id] = dict(right_answer=words[right_answer_index],
+                                               right_translation=right_word_info['tr'][0]['text'].capitalize(),
                                                right_answer_index=right_answer_index, keyboard=KeysNewWord,
                                                examples=sentence, is_right=False)
 
@@ -191,7 +192,7 @@ class viber_bot:
         else:
             message = [TextMessage(text='К сожалению вы ошиблись! Баллов не будет, но вы держитесь(ugh)'),
                        TextMessage(text='Правильный ответ "' + KeysWords[self.current_user.id][
-                           'right_answer'].translation + '"')]
+                           'right_translation'] + '"')]
 
         self.__save__answer__()
         message = message + self.__new__word__message__()
@@ -230,12 +231,12 @@ class viber_bot:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
         if self.current_user.is_notice_need:
-            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ',
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ',
                                                                               'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
         else:
-            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ВКЛЮЧИТЬ НАПОМИНАНИЯ',
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ВКЛЮЧИТЬ НАПОМИНАНИЯ',
                                                                               'ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ')
 
         return KeysStart[self.current_user.id]
