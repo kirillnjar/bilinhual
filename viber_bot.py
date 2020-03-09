@@ -247,7 +247,7 @@ class viber_bot:
         if self.current_user.id not in KeysStart:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
-        if self.current_user.is_notice_need:
+        if not self.current_user.is_notice_need:
             KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
                 KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ',
                                                                               'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
@@ -274,12 +274,11 @@ class viber_bot:
                 KeyboardMessage(keyboard=keyboard)]
 
     def __get__disable__(self):
-        if self.session.query(bot_users_answers).count() % 10 == 0 or self.current_user.id not in KeysWords:
-            keyboard = self.__get__keys_start__()
-        else:
-            keyboard = KeysWords[self.current_user.id]['keyboard']
 
-        if self.current_user.is_notice_need:
+        self.current_user.is_notice_need = not self.current_user.is_notice_need
+        keyboard = self.__get__keys_start__()
+
+        if not self.current_user.is_notice_need:
             message = \
                 [TextMessage(text="Включить напоминание можно будет в конце каждого раунда"),
                  KeyboardMessage(keyboard=keyboard)]
@@ -287,7 +286,6 @@ class viber_bot:
             message = \
                 [TextMessage(text="Мы обязательно вам напомним!"),
                  KeyboardMessage(keyboard=keyboard)]
-        self.current_user.is_notice_need = not self.current_user.is_notice_need
         self.session.commit()
         return message
 
