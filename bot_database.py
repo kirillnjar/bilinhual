@@ -23,10 +23,11 @@ class bot_users(Base):
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_users")
 
     def __repr__(self):
-        return "<User(id='{}, viber id={}, name={}, repeats number={}, is difficulty need ={})>".format(self.id,
+        return "<User(id='{}, viber id={}, name={}, notice_time={}, is_notice_need ={})>".format(self.id,
                                                                                                         self.viber_id,
-                                                                                                        self.name)
-
+                                                                                                        self.name,
+                                                                                                 self.notice_time,
+                                                                                                 self.is_notice_need)
 
 class bot_words(Base):
     __tablename__ = 'bot_words'
@@ -36,7 +37,7 @@ class bot_words(Base):
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_words")
 
     def __repr__(self):
-            return "<Words(id={}, word={}, translation={}, examples={})>".format(self.id, self.word)
+            return "<Words(id={}, word={})>".format(self.id, self.word)
 
 class bot_users_answers(Base):
     __tablename__ = 'bot_users_answers'
@@ -50,7 +51,7 @@ class bot_users_answers(Base):
     bot_users = relationship("bot_users", back_populates="bot_users_answers")
     bot_words = relationship("bot_words", back_populates="bot_users_answers")
     def __repr__(self):
-        return "<Answers(id={}, word={}, sentence={}, id_word={}, is_right={}, is_right={}, answer_date={}, id_difficulty={})>"\
+        return "<Answers(id={}, id_user={}, id_word={}, is_right={}, answer_date={})>"\
             .format(self.id, self.id_user, self.id_word, self.is_right, self.answer_date)
 
 
