@@ -4,6 +4,7 @@ import random
 from datetime import timedelta
 
 from sqlalchemy import func
+from sqlalchemy.sql.elements import Null
 from viberbot.api.messages import PictureMessage, KeyboardMessage, FileMessage
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.viber_requests import ViberMessageRequest
@@ -259,13 +260,8 @@ class viber_bot:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
-        if self.current_user.notice_time is None:
-            self.current_user.notice_time = timedelta(minutes=30)
-        print(self.current_user.notice_time)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
-        print(self.current_user.notice_time)
         self.session.commit()
-        print(self.current_user.notice_time)
         return [TextMessage(text="Будет сделано (eyes)"),
                 KeyboardMessage(keyboard=keyboard)]
 
