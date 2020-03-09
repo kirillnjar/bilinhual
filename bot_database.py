@@ -25,9 +25,7 @@ class bot_users(Base):
     def __repr__(self):
         return "<User(id='{}, viber id={}, name={}, repeats number={}, is difficulty need ={})>".format(self.id,
                                                                                                         self.viber_id,
-                                                                                                        self.name,
-                                                                                                        self.repeats_number,
-                                                                                                        self.is_difficulty_need)
+                                                                                                        self.name)
 
 
 class bot_words(Base):
@@ -38,15 +36,7 @@ class bot_words(Base):
     bot_users_answers = relationship("bot_users_answers", back_populates="bot_words")
 
     def __repr__(self):
-        if len(self.bot_examples) != 0:
-            sentences = list()
-            for i in range(0, len(self.bot_examples)):
-                sentences.append(self.bot_examples[i].sentence)
-            return "<Words(id={}, word={}, translation={}, examples={})>".format(self.id, self.word,
-                                                                                 self.translation, sentences)
-        else:
-            return "<Words(id={}, word={}, translation={}, examples={})>".format(self.id, self.word,
-                                                                                 self.translation, self.bot_examples)
+            return "<Words(id={}, word={}, translation={}, examples={})>".format(self.id, self.word)
 
 class bot_users_answers(Base):
     __tablename__ = 'bot_users_answers'
@@ -61,7 +51,7 @@ class bot_users_answers(Base):
     bot_words = relationship("bot_words", back_populates="bot_users_answers")
     def __repr__(self):
         return "<Answers(id={}, word={}, sentence={}, id_word={}, is_right={}, is_right={}, answer_date={}, id_difficulty={})>"\
-            .format(self.id, self.id_user, self.id_word, self.is_right, self.answer_date, self.id_difficulty)
+            .format(self.id, self.id_user, self.id_word, self.is_right, self.answer_date)
 
 
 
