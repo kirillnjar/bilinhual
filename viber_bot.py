@@ -260,7 +260,10 @@ class viber_bot:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
+        if self.current_user.notice_time is None:
+            self.current_user.notice_time = timedelta(minutes=30)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
+        self.session.add(self.current_user)
         self.session.commit()
         return [TextMessage(text="Будет сделано (eyes)"),
                 KeyboardMessage(keyboard=keyboard)]
