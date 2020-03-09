@@ -195,9 +195,11 @@ class viber_bot:
         if self.current_user.id not in KeysWords:
             return self.__unknown__message__()
 
+        print(self.current_user)
         self.current_user.notice_time = None
         self.session.add(self.current_user)
         self.session.commit()
+        print(self.current_user)
 
         # Правильный ответ?
         KeysWords[self.current_user.id]['is_right'] = \
@@ -261,11 +263,13 @@ class viber_bot:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
+        print(self.current_user)
         if self.current_user.notice_time is None:
             self.current_user.notice_time = timedelta(minutes=30)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
         self.session.add(self.current_user)
         self.session.commit()
+        print(self.current_user)
         return [TextMessage(text="Будет сделано (eyes)"),
                 KeyboardMessage(keyboard=keyboard)]
 
