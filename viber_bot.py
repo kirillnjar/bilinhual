@@ -196,6 +196,7 @@ class viber_bot:
             return self.__unknown__message__()
 
         self.current_user.notice_time = None
+        self.session.add(self.current_user)
         self.session.commit()
 
         # Правильный ответ?

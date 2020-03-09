@@ -14,7 +14,7 @@ sched = BlockingScheduler()
 
 hello_messages = ['Привет,', 'И снова здравствуйте,', 'Доброго времени суток,']
 
-@sched.scheduled_job('interval', minutes=30)
+@sched.scheduled_job('interval', seconds=30)
 def notice_job():
     session = Session()
     us = session.query(bot_users) \
