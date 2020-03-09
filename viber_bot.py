@@ -244,7 +244,7 @@ class viber_bot:
         if self.current_user.id not in KeysStart:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
-        if not self.current_user.is_notice_need:
+        if self.current_user.is_notice_need:
             KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
                 KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ',
                                                                               'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
@@ -273,6 +273,7 @@ class viber_bot:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
+
         if self.current_user.is_notice_need:
             message = \
                 [TextMessage(text="Включить напоминание можно будет в конце каждого раунда"),
