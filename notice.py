@@ -12,19 +12,19 @@ from main import viber
 
 sched = BlockingScheduler()
 
-hello_messages = ['Привет,', 'И снова здравствуйте,', 'Доброго времени суток,']
+hello_messages = ['Привет,', 'Это снова я,', 'Ээй!,']
 
-@sched.scheduled_job('interval', minutes=30)
+@sched.scheduled_job('interval', minutes=1)
 def notice_job():
     session = Session()
     us = session.query(bot_users) \
         .outerjoin(bot_users.bot_users_answers) \
         .group_by(bot_users) \
         .having(and_(func.current_timestamp(type_=types.DateTime) - func.max(bot_users_answers.answer_date) > coalesce(
-        bot_users.notice_time, '00:30:00'), bot_users.is_notice_need)) \
+        bot_users.notice_time, '00:01:00'), bot_users.is_notice_need)) \
         .all()
     for u in us:
-        message = [TextMessage(text=random.choice(hello_messages) + " " + u.name + "! Вы не забыли об обучении? (hmm)"),
+        message = [TextMessage(text=random.choice(hello_messages) + " " + u.name + "! Помните обо мне? "),
                    KeyboardMessage(keyboard=__get__keys_notice__(u))]
         viber.send_messages(u.viber_id, message)
 
@@ -32,7 +32,7 @@ def notice_job():
 def __get__keys_notice__(user):
     NoticeKeys = json.load(open('notice_keyboard.json', encoding='utf-8'))
 
-    if user.is_notice_need:
+    if not user.is_notice_need:
         NoticeKeys['Buttons'][2]['Text'] = \
             NoticeKeys['Buttons'][2]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ', 'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
     else:

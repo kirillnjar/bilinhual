@@ -1,14 +1,14 @@
-from datetime import time, datetime, timedelta
+# Бот
+import json
+import random
+from datetime import timedelta
 
 from sqlalchemy import func, types
 from viberbot.api.messages import PictureMessage, KeyboardMessage
 from viberbot.api.messages.text_message import TextMessage
 from viberbot.api.viber_requests import ViberMessageRequest
 from viberbot.api.viber_requests import ViberSubscribedRequest
-import random
 
-# Бот
-import json
 from bot_database import *
 
 KeysStart = dict()
@@ -36,21 +36,16 @@ class viber_bot:
                     self.__response_message = self.__help__message__()
                 elif word.split(' ')[0].lower() == 'start':
                     self.__response_message = self.__new__word__message__(True)
-                elif word.split(' ')[0].lower() == 'difficulty':
-                    self.__response_message = self.__change__difficulty__message__()
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
+                elif word.split(' ')[0].lower() == 'syn':
+                    self.__response_message = self.__sym_message__()
                 elif word.split(' ')[0].lower() == 'taside':
                     self.__response_message = self.__get__aside__()
                 elif word.split(' ')[0].lower() == 'tdisable':
                     self.__response_message = self.__get__disable__()
                 else:
                     self.__response_message = self.__unknown__message__()
-            elif word[0] == 'd':
-                print(word[1])
-                KeysWords[self.current_user.id]['difficulty'] = int(word[1])
-                self.__save__answer__()
-                self.__response_message = self.__new__word__message__()
             elif word in ['1', '2', '3', '4']:
                 self.__response_message = self.__answer_message__(word.split(' ')[0].lower())
                 pass
@@ -97,7 +92,6 @@ class viber_bot:
 
     # сообщение помощи
     def __help__message__(self):
-        self.current_user.notice_time = None
         return [TextMessage(text='Чтобы начать изучение - нажми на СТАРТ'),
                 KeyboardMessage(keyboard=self.__get__keys_start__())]
 
@@ -135,22 +129,17 @@ class viber_bot:
                 if answer.is_right:
                     score = score + 1
             message = [TextMessage(
-                text='Раунд завершен. Ваш результат: ' + str(score) + ' из 10'),
-                          TextMessage(text='Отлично сыграно!')] + self.__help__message__()
+                text='Раунд закончился. Ваш результат: ' + str(score) + ' из 10'),
+                          TextMessage(text='Спасибо за игру!')] + self.__help__message__()
             return message
 
         KeysNewWord = json.load(open('word_keyboard.json', encoding='utf-8'))
-
-        # Полуаем количество повторов для запоминания
-        repeats_number = self.current_user.repeats_number
-        if repeats_number is None:
-            repeats_number = 20
 
         # получаем слова
         words = self.session.query(bot_words) \
             .outerjoin(bot_words.bot_users_answers) \
             .group_by(bot_words) \
-            .having(func.count_(bot_words.bot_users_answers) < repeats_number) \
+            .having(func.count_(bot_words.bot_users_answers)) \
             .order_by(func.random()) \
             .limit(4) \
             .all()
@@ -179,7 +168,7 @@ class viber_bot:
 
         # задаем вопрос
         return [TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
-                TextMessage(text='Выберите верный вариант на клавиатуре'),
+                TextMessage(text='Вариатны перевода представлены на клавиатуре'),
                 KeyboardMessage(keyboard=KeysNewWord)]
 
     def __answer_message__(self, answer_index):
@@ -187,32 +176,34 @@ class viber_bot:
         if self.current_user.id not in KeysWords:
             return self.__unknown__message__()
 
+        print(self.current_user)
+        self.current_user.notice_time = None
+        self.session.add(self.current_user)
+        self.session.commit()
+        print(self.current_user)
+
         # Правильный ответ?
         KeysWords[self.current_user.id]['is_right'] = \
             KeysWords[self.current_user.id]['right_answer_index'] == int(answer_index) - 1
 
         # Формируем сообщение
         if KeysWords[self.current_user.id]['is_right']:
-            message = [TextMessage(text='Верно! Вы получаете один балл')]
+            message = [TextMessage(text='Верно!')]
         else:
-            message = [TextMessage(text='Ой, вы ошиблись!'),
+            message = [TextMessage(text='Ошибка!'),
                        TextMessage(text='Правильный ответ "' + KeysWords[self.current_user.id][
                            'right_answer'].translation + '"')]
 
-        if not self.current_user.is_difficulty_need:
-            self.__save__answer__()
-            message = message + self.__new__word__message__()
-        else:
-            difficulty_keyboard = json.load(open('difficulty_keyboard.json', encoding='utf-8'))
-            message = message + [TextMessage(text='Пожалуйста. Оцените слово по сложности от 1 до 5'),
-                                 KeyboardMessage(keyboard=difficulty_keyboard)]
+        self.__save__answer__()
+        message = message + self.__new__word__message__()
+
         return message
 
     def __example_message__(self):
         # Если примеры кончились
         if len(KeysWords[self.current_user.id]['examples']) == 0:
             return [TextMessage(
-                text='Это все примеры, что у меня есть...'),
+                text='Примеры кончились...'),
                 KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
 
         # Выбираем случайный пример
@@ -229,78 +220,56 @@ class viber_bot:
     def __save__answer__(self):
         # Добавляем ответ в базу
         self.session = Session()
-        id_difficulty = None
-        if 'difficulty' in KeysWords[self.current_user.id]:
-            id_difficulty = KeysWords[self.current_user.id]['difficulty']
+
         user_answer = bot_users_answers(id_user=self.current_user.id,
                                         id_word=KeysWords[self.current_user.id]['right_answer'].id,
                                         is_right=KeysWords[self.current_user.id]['is_right'],
-                                        answer_date=self.session.query(func.current_timestamp(type_=types.DateTime)),
-                                        id_difficulty=id_difficulty)
+                                        answer_date=self.session.query(func.current_timestamp(type_=types.DateTime)))
         self.session.add(user_answer)
         self.session.commit()
-
-    def __change__difficulty__message__(self):
-        self.current_user.is_difficulty_need = not self.current_user.is_difficulty_need
-
-        if not self.current_user.is_difficulty_need:
-            message = [TextMessage(text='Жаль что вы не хотите помочь улучшить каество предлагаемых слов '),
-                       TextMessage(text='Если вы передумаете - нажмите на ОТМЕЧАТЬ СЛОЖНОСТЬ ПОСЛЕ ОТВЕТА. Спасибо!')]
-        else:
-            message = [TextMessage(text='Спасибо за помощь')]
-
-        message = message + [KeyboardMessage(keyboard=self.__get__keys_start__())]
-
-        self.session.commit()
-        return message
 
     def __get__keys_start__(self):
         if self.current_user.id not in KeysStart:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
-        if self.current_user.is_difficulty_need:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
-                'Text']. \
-                replace('НЕ ', '').replace('ОТМЕЧАТЬ', 'НЕ ОТМЕЧАТЬ')
+        if not self.current_user.is_notice_need:
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ',
+                                                                              'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
         else:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
-                'Text'].replace('НЕ ', '')
-
-        if self.current_user.is_notice_need:
-            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('Выключить напоминания', 'Включить напоминания')
-        else:
-            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('Включить напоминания', 'Выключить напоминания')
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('ВКЛЮЧИТЬ НАПОМИНАНИЯ',
+                                                                              'ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ')
 
         return KeysStart[self.current_user.id]
 
     def __get__aside__(self):
-        if self.current_user.id not in KeysWords:
+        if self.session.query(bot_users_answers).count() % 10 == 0 or self.current_user.id not in KeysWords:
             keyboard = self.__get__keys_start__()
         else:
             keyboard = KeysWords[self.current_user.id]['keyboard']
+        print(self.current_user)
         if self.current_user.notice_time is None:
             self.current_user.notice_time = timedelta(minutes=30)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
+        self.session.add(self.current_user)
         self.session.commit()
-        return [TextMessage(text="Оки-доки"),
+        print(self.current_user)
+        return [TextMessage(text="Будет исполнено"),
                 KeyboardMessage(keyboard=keyboard)]
 
     def __get__disable__(self):
 
-        if self.current_user.id not in KeysWords:
-            keyboard = self.__get__keys_start__()
-        else:
-            keyboard = KeysWords[self.current_user.id]['keyboard']
-        if self.current_user.is_notice_need:
+        self.current_user.is_notice_need = not self.current_user.is_notice_need
+        keyboard = self.__get__keys_start__()
+
+        if not self.current_user.is_notice_need:
             message = \
                 [TextMessage(text="Включить напоминание можно будет в конце каждого раунда"),
                  KeyboardMessage(keyboard=keyboard)]
         else:
             message = \
-                [TextMessage(text="Я о вас не забуду."),
+                [TextMessage(text="Мы обязательно вам напомним!"),
                  KeyboardMessage(keyboard=keyboard)]
-        self.current_user.is_notice_need = not self.current_user.is_notice_need
         self.session.commit()
         return message
