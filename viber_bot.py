@@ -16,8 +16,8 @@ KeysWords = dict()
 
 
 class viber_bot:
-    __unknown_messages_collection = ['Не понимаю о чем ты говоришь', 'Данная информация не может быть мною распознана',
-                                     'Критическая ошибка в программе. Соощение ошибки: "Убить всех человеков"']
+    __unknown_messages_collection = ['?', 'Не понял, что вы имеете ввиду?',
+                                     '*предсмертный хрип*']
     current_user = None
     __response_message = None
 
@@ -135,8 +135,8 @@ class viber_bot:
                 if answer.is_right:
                     score = score + 1
             message = [TextMessage(
-                text='Раунд закончился. Ваш результат: ' + str(score) + ' из 10'),
-                          TextMessage(text='Спасибо за игру! (like)')] + self.__help__message__()
+                text='Раунд завершен. Ваш результат: ' + str(score) + ' из 10'),
+                          TextMessage(text='Отлично сыграно!')] + self.__help__message__()
             return message
 
         KeysNewWord = json.load(open('word_keyboard.json', encoding='utf-8'))
@@ -179,8 +179,7 @@ class viber_bot:
 
         # задаем вопрос
         return [TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
-                TextMessage(text='Вариатны перевода представлены на клавиатуре'),
-                TextMessage(text='Удачи!(moa)'),
+                TextMessage(text='Выберите верный вариант на клавиатуре'),
                 KeyboardMessage(keyboard=KeysNewWord)]
 
     def __answer_message__(self, answer_index):
@@ -194,9 +193,9 @@ class viber_bot:
 
         # Формируем сообщение
         if KeysWords[self.current_user.id]['is_right']:
-            message = [TextMessage(text='И это правильный ответ! Вы получаете плюс один балл (smiley)')]
+            message = [TextMessage(text='Верно! Вы получаете один балл')]
         else:
-            message = [TextMessage(text='К сожалению вы ошиблись! Баллов не будет, но вы держитесь(ugh)'),
+            message = [TextMessage(text='Ой, вы ошиблись!'),
                        TextMessage(text='Правильный ответ "' + KeysWords[self.current_user.id][
                            'right_answer'].translation + '"')]
 
@@ -213,7 +212,7 @@ class viber_bot:
         # Если примеры кончились
         if len(KeysWords[self.current_user.id]['examples']) == 0:
             return [TextMessage(
-                text='Примеры кончились (sad)'),
+                text='Это все примеры, что у меня есть...'),
                 KeyboardMessage(keyboard=KeysWords[self.current_user.id]['keyboard'])]
 
         # Выбираем случайный пример
@@ -245,10 +244,10 @@ class viber_bot:
         self.current_user.is_difficulty_need = not self.current_user.is_difficulty_need
 
         if not self.current_user.is_difficulty_need:
-            message = [TextMessage(text='Жаль что вы не хотите помочь улучшить каество предлагаемых слов (depressed)'),
+            message = [TextMessage(text='Жаль что вы не хотите помочь улучшить каество предлагаемых слов '),
                        TextMessage(text='Если вы передумаете - нажмите на ОТМЕЧАТЬ СЛОЖНОСТЬ ПОСЛЕ ОТВЕТА. Спасибо!')]
         else:
-            message = [TextMessage(text='Спасибо за помощь (yo)')]
+            message = [TextMessage(text='Спасибо за помощь')]
 
         message = message + [KeyboardMessage(keyboard=self.__get__keys_start__())]
 
@@ -269,10 +268,10 @@ class viber_bot:
 
         if self.current_user.is_notice_need:
             KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ', 'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
+                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('Выключить напоминания', 'Включить напоминания')
         else:
             KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('ВКЛЮЧИТЬ НАПОМИНАНИЯ', 'ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ')
+                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('Включить напоминания', 'Выключить напоминания')
 
         return KeysStart[self.current_user.id]
 
@@ -285,7 +284,7 @@ class viber_bot:
             self.current_user.notice_time = timedelta(minutes=30)
         self.current_user.notice_time = self.current_user.notice_time + timedelta(minutes=30)
         self.session.commit()
-        return [TextMessage(text="Будет сделано (eyes)"),
+        return [TextMessage(text="Оки-доки"),
                 KeyboardMessage(keyboard=keyboard)]
 
     def __get__disable__(self):
@@ -300,7 +299,7 @@ class viber_bot:
                  KeyboardMessage(keyboard=keyboard)]
         else:
             message = \
-                [TextMessage(text="Мы обязательно вам напомним!"),
+                [TextMessage(text="Я о вас не забуду."),
                  KeyboardMessage(keyboard=keyboard)]
         self.current_user.is_notice_need = not self.current_user.is_notice_need
         self.session.commit()
