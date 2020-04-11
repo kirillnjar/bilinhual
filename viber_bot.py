@@ -36,8 +36,6 @@ class viber_bot:
                     self.__response_message = self.__help__message__()
                 elif word.split(' ')[0].lower() == 'start':
                     self.__response_message = self.__new__word__message__(True)
-                elif word.split(' ')[0].lower() == 'difficulty':
-                    self.__response_message = self.__change__difficulty__message__()
                 elif word.split(' ')[0].lower() == 'example':
                     self.__response_message = self.__example_message__()
                 elif word.split(' ')[0].lower() == 'taside':
@@ -46,11 +44,6 @@ class viber_bot:
                     self.__response_message = self.__get__disable__()
                 else:
                     self.__response_message = self.__unknown__message__()
-            elif word[0] == 'd':
-                print(word[1])
-                KeysWords[self.current_user.id]['difficulty'] = int(word[1])
-                self.__save__answer__()
-                self.__response_message = self.__new__word__message__()
             elif word in ['1', '2', '3', '4']:
                 self.__response_message = self.__answer_message__(word.split(' ')[0].lower())
                 pass
@@ -128,8 +121,8 @@ class viber_bot:
     # сообщение с новым словом
     def __new__word__message__(self, is_start=False):
         # закончился ли раунд?
-        if self.session.query(bot_users_answers).count() % 10 == 0 and not is_start:
-            answers = self.session.query(bot_users_answers).order_by(bot_users_answers.id.desc()).limit(10).all()
+        if self.session.query(bot_users_answers).count() % 3 == 0 and not is_start:
+            answers = self.session.query(bot_users_answers).order_by(bot_users_answers.id.desc()).limit(3).all()
             score = 0
             for answer in answers:
                 if answer.is_right:
@@ -253,14 +246,6 @@ class viber_bot:
     def __get__keys_start__(self):
         if self.current_user.id not in KeysStart:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
-
-        if self.current_user.is_difficulty_need:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
-                'Text']. \
-                replace('НЕ ', '').replace('ОТМЕЧАТЬ', 'НЕ ОТМЕЧАТЬ')
-        else:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
-                'Text'].replace('НЕ ', '')
 
         if self.current_user.is_notice_need:
             KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
