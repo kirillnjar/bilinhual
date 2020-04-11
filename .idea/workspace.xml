@@ -5,8 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebHook1.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebHook1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start_keyboard.json" beforeDir="false" afterPath="$PROJECT_DIR$/start_keyboard.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/viber_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/viber_bot.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +39,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.WebHook1">
     <configuration name="WebHook" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Лабораторная работа №1" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -149,8 +147,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.WebHook1" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.WebHook" />
         <item itemvalue="Python.notice" />
         <item itemvalue="Python.__init__" />
