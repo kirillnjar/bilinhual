@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2284689a-ea8c-418b-bcad-83addded6c44" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/bot_database.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot_database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/viber_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/viber_bot.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
