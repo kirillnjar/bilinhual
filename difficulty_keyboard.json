@@ -1,0 +1,44 @@
+{
+      "Type":"keyboard",
+      "Buttons":[
+         {
+            "Columns": 2,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"d1",
+            "Text":"⭐"
+         },{
+            "Columns": 2,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"d2",
+            "Text":"⭐⭐"
+         },{
+            "Columns": 2,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"d3",
+            "Text":"⭐⭐⭐"
+         },{
+            "Columns": 3,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"d4",
+            "Text":"⭐⭐⭐⭐"
+         },{
+            "Columns": 3,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"d5",
+            "Text":"⭐⭐⭐⭐⭐"
+         },{
+            "Columns": 6,
+	        "Rows": 1,
+	        "BgColor": "#FFC6C6",
+            "ActionBody":"d6",
+            "Text":"<font color=\"#494E67\" size=\"10\"><b>Не подходящее</b></font>"
+			
+         }
+
+      ]
+}

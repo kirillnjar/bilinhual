@@ -29,8 +29,9 @@
             "Columns": 6,
 	        "Rows": 1,
 	        "BgColor": "#FFC6C6",
-            "ActionBody":"/hint",
-            "Text":"<font color=\"#494E67\" size=\"10\"><b>Подсказки</b></font>"
+            "ActionBody":"/example",
+            "Text":"<font color=\"#494E67\" size=\"10\"><b>Пример использования</b></font>"
+			
          }
 
       ]
