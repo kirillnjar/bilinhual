@@ -20,8 +20,8 @@ translater = YandexDictionary('dict.1.1.20200220T183914Z.ad078cb041516bce.6b3e7e
 
 
 class viber_bot:
-    __unknown_messages_collection = ['Не понимаю о чем ты говоришь', 'Данная информация не может быть мною распознана',
-                                     'Критическая ошибка в программе. Соощение ошибки: "Убить всех человеков"']
+    __unknown_messages_collection = ['?', 'Не понял, что вы имеете ввиду?',
+                                     '*предсмертный хрип*']
     current_user = None
     __response_message = None
 
@@ -186,9 +186,8 @@ class viber_bot:
         # обрабокта законена. подтверждаем транзакцию
         self.session.commit()
         # задаем вопрос
-        return [TextMessage(text='Ваше слово: ' + words[right_answer_index].word),
-                TextMessage(text='Вариатны перевода представлены на клавиатуре'),
-                TextMessage(text='Удачи!(moa)'),
+        return [TextMessage(text='Переведите слово: ' + words[right_answer_index].word),
+                TextMessage(text='Выберите верный перевод на клавиатуре'),
                 KeyboardMessage(keyboard=KeysNewWord)]
 
     def __answer_message__(self, answer_index):
@@ -207,9 +206,9 @@ class viber_bot:
 
         # Формируем сообщение
         if KeysWords[self.current_user.id]['is_right']:
-            message = [TextMessage(text='И это правильный ответ! Вы получаете плюс один балл (smiley)')]
+            message = [TextMessage(text='Верно! Вы получаете один балл')]
         else:
-            message = [TextMessage(text='К сожалению вы ошиблись! Баллов не будет, но вы держитесь(ugh)'),
+            message = [TextMessage(text='Упс, ошибка!'),
                        TextMessage(text='Правильный ответ "' + KeysWords[self.current_user.id][
                            'right_translation'] + '"')]
 
@@ -221,7 +220,7 @@ class viber_bot:
         # Если примеры кончились
         if len(KeysWords[self.current_user.id]['examples']) == 0:
             return [TextMessage(
-                text='Примеры кончились (sad)')] + self.__hints_message__()
+                text='Это все примеры, что у меня есть...')] + self.__hints_message__()
 
         # Выбираем случайный пример
         message_text = random.choice(KeysWords[self.current_user.id]['examples'])
@@ -270,7 +269,7 @@ class viber_bot:
         self.session.add(self.current_user)
         self.session.commit()
         print(self.current_user)
-        return [TextMessage(text="Будет сделано (eyes)"),
+        return [TextMessage(text="Принято"),
                 KeyboardMessage(keyboard=keyboard)]
 
     def __get__disable__(self):
@@ -280,11 +279,11 @@ class viber_bot:
 
         if not self.current_user.is_notice_need:
             message = \
-                [TextMessage(text="Включить напоминание можно будет в конце каждого раунда"),
+                [TextMessage(text="Напоминание можно включить в конце раунда."),
                  KeyboardMessage(keyboard=keyboard)]
         else:
             message = \
-                [TextMessage(text="Мы обязательно вам напомним!"),
+                [TextMessage(text="Я о вас не забуду!"),
                  KeyboardMessage(keyboard=keyboard)]
         self.session.commit()
         return message
