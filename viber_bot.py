@@ -121,8 +121,8 @@ class viber_bot:
     # сообщение с новым словом
     def __new__word__message__(self, is_start=False):
         # закончился ли раунд?
-        if self.session.query(bot_users_answers).count() % 3 == 0 and not is_start:
-            answers = self.session.query(bot_users_answers).order_by(bot_users_answers.id.desc()).limit(3).all()
+        if self.session.query(bot_users_answers).count() % 10 == 0 and not is_start:
+            answers = self.session.query(bot_users_answers).order_by(bot_users_answers.id.desc()).limit(10).all()
             score = 0
             for answer in answers:
                 if answer.is_right:
