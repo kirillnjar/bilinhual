@@ -255,20 +255,12 @@ class viber_bot:
         if self.current_user.id not in KeysStart:
             KeysStart[self.current_user.id] = json.load(open('start_keyboard.json', encoding='utf-8'))
 
-        if self.current_user.is_difficulty_need:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
-                'Text']. \
-                replace('НЕ ', '').replace('ОТМЕЧАТЬ', 'НЕ ОТМЕЧАТЬ')
-        else:
-            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = KeysStart[self.current_user.id]['Buttons'][1][
-                'Text'].replace('НЕ ', '')
-
         if self.current_user.is_notice_need:
-            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('Выключить напоминания', 'Включить напоминания')
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('Выключить напоминания', 'Включить напоминания')
         else:
-            KeysStart[self.current_user.id]['Buttons'][2]['Text'] = \
-                KeysStart[self.current_user.id]['Buttons'][2]['Text'].replace('Включить напоминания', 'Выключить напоминания')
+            KeysStart[self.current_user.id]['Buttons'][1]['Text'] = \
+                KeysStart[self.current_user.id]['Buttons'][1]['Text'].replace('Включить напоминания', 'Выключить напоминания')
 
         return KeysStart[self.current_user.id]
 

@@ -1,7 +1,7 @@
 import datetime
 import json
 import random
-
+import requests
 from apscheduler.schedulers.blocking import BlockingScheduler
 from sqlalchemy import func, types, and_
 from sqlalchemy.sql.functions import coalesce
@@ -41,5 +41,11 @@ def __get__keys_notice__(user):
 
     return NoticeKeys
 
+
+@sched.scheduled_job('interval', minutes=20)
+def awake_bot():
+    r = requests.get("https://bilinhual.herokuapp.com/")
+    if r.status_code == 200:
+        print("Bot is awake")
 
 sched.start()
