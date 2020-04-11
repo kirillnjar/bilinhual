@@ -199,13 +199,6 @@ class viber_bot:
                        TextMessage(text='Правильный ответ "' + KeysWords[self.current_user.id][
                            'right_answer'].translation + '"')]
 
-        if not self.current_user.is_difficulty_need:
-            self.__save__answer__()
-            message = message + self.__new__word__message__()
-        else:
-            difficulty_keyboard = json.load(open('difficulty_keyboard.json', encoding='utf-8'))
-            message = message + [TextMessage(text='Пожалуйста. Оцените слово по сложности от 1 до 5'),
-                                 KeyboardMessage(keyboard=difficulty_keyboard)]
         return message
 
     def __example_message__(self):
