@@ -1,0 +1,31 @@
+{
+      "Type":"keyboard",
+      "Buttons":[
+         {
+            "Columns": 3,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"/syn",
+            "Text":"Синоним"
+         },{
+            "Columns": 3,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"/example",
+            "Text":"Пример использования"
+         },{
+            "Columns": 6,
+	        "Rows": 1,
+	        "BgColor": "#C6FFF9",
+            "ActionBody":"/tts",
+            "Text":"Прослушать слово"
+			
+         },{
+            "Columns": 6,
+	        "Rows": 1,
+	        "BgColor": "#FFC6C6",
+            "ActionBody":"/backhint",
+            "Text":"<font color=\"#494E67\" size=\"10\"><b>Перейти к выбору слова</b></font>"
+         }
+      ]
+}

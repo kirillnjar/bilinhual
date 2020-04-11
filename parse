@@ -1,0 +1,54 @@
+import sqlite3
+import xml.etree.ElementTree as ET
+import requests
+
+# создание подключения
+conn = sqlite3.connect('bot.db')
+
+
+queryInsertIntoWords = r"""
+INSERT INTO bot_WORDS (WORD, TRANSLATION)
+VALUES (?, ?);
+"""
+querySelectLastInsertedRow = r"""
+SELECT last_insert_rowid();
+"""
+queryInsertIntoExamples = r"""
+INSERT INTO bot_EXAMPLES (ID_WORD, SENTENCE)
+VALUES (?, ?);
+"""
+
+tree = ET.parse("dict.xdxf")
+root = tree.getroot()
+is_done = False
+count = 0
+for child in root:
+    for grandchild in child:
+        if (grandchild.tag == "k"):
+            url = 'https://dictionary.yandex.net/api/v1/dicservice/lookup?'
+            key = 'dict.1.1.20200221T075057Z.2beb7c3d99b784da.0c00f9848048f66eae5bae704238f668d3c963d7'
+            text = grandchild.text.capitalize()
+            lang = 'en-ru'
+            r = requests.post(url, data={'key': key, 'text': text, 'lang': lang})
+            try:
+                tree = ET.fromstring(r.text)
+                translate = tree.find('def').find('tr').find('text').text.capitalize()
+                example = list()
+                examplesEl = tree.find('def').find('tr').findall('ex')
+
+                conn.execute(queryInsertIntoWords, (text, translate))
+                conn.commit()
+                insertedid = conn.execute(querySelectLastInsertedRow).fetchone()[0]
+                for child in examplesEl:
+                    example.append(child.find('text').text.capitalize())
+                    conn.execute(queryInsertIntoExamples, (insertedid, child.find('text').text.capitalize()))
+                print(text, translate, example)
+                conn.commit()
+            except:
+                print('Ошибка в слове', text)
+                print('Сообщение ошибки', text)
+                conn.rollback()
+print('Number of rows ' + str(count))
+conn.close()
+
+

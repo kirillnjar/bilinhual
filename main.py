@@ -13,6 +13,7 @@ viber = Api(BotConfiguration(
 ))
 
 
+
 @app.route('/', methods=['POST'])
 def incoming():
     viber_request = viber.parse_request(request.get_data())
@@ -21,9 +22,7 @@ def incoming():
     bot.set_request(viber_request)
     messages = bot.get_response()
     if messages is not None:
-        print(messages)
         viber.send_messages(bot.current_user.viber_id, messages)
-        pass
     return Response(status=200)
 
 

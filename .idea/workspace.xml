@@ -39,7 +39,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.WebHook1">
     <configuration name="WebHook" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Лабораторная работа №1" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,8 +147,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.WebHook1" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.WebHook" />
         <item itemvalue="Python.notice" />
         <item itemvalue="Python.__init__" />

@@ -14,7 +14,7 @@ sched = BlockingScheduler()
 
 hello_messages = ['Привет,', 'И снова здравствуйте,', 'Доброго времени суток,']
 
-@sched.scheduled_job('interval', minutes=30)
+@sched.scheduled_job('interval', minutes=10)
 def notice_job():
     session = Session()
     us = session.query(bot_users) \
@@ -32,7 +32,7 @@ def notice_job():
 def __get__keys_notice__(user):
     NoticeKeys = json.load(open('notice_keyboard.json', encoding='utf-8'))
 
-    if user.is_notice_need:
+    if not user.is_notice_need:
         NoticeKeys['Buttons'][2]['Text'] = \
             NoticeKeys['Buttons'][2]['Text'].replace('ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ', 'ВКЛЮЧИТЬ НАПОМИНАНИЯ')
     else:
