@@ -6,6 +6,7 @@ import os
 
 from viber_bot import viber_bot
 
+app = Flask(__name__)
 viber = Api(BotConfiguration(
     name='Bilinhual',
     avatar='https://dl-media.viber.com/1/share/2/long/vibes/icon/image/0x0/f09b'
