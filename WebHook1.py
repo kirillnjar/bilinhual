@@ -5,7 +5,7 @@ from main import *
 
 port = int(os.environ.get("PORT", 5000))
 
-#app = Flask(__name__)
+app = Flask(__name__)
 viber = Api(BotConfiguration(
     name='Bilinhual',
     avatar='https://dl-media.viber.com/1/share/2/long/vibes/icon/image/0x0/f09b'

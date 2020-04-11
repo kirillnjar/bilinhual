@@ -13,6 +13,15 @@
 		}, {
             "Columns": 6,
 	        "Rows": 1,
+            "ActionBody":"/difficulty",
+            "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>ОТМЕЧАТЬ СЛОЖНОСТЬ ПОСЛЕ ОТВЕТА</b></font>",
+			"TextSize": "medium",
+			"TextHAlign": "center",
+			"TextVAlign": "center",
+			"BgColor": "#ff2e00"
+		}, {
+            "Columns": 6,
+	        "Rows": 1,
             "ActionBody":"/tdisable",
             "Text": "<font color=\"#c7c7c7\" size=\"10\"><b>ОТКАЗАТЬСЯ ОТ НАПОМИНАНИЙ</b></font>",
 			"TextSize": "medium",

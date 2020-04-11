@@ -1,9 +1,7 @@
 from flask import Flask, request, Response
 from viberbot import Api
 from viberbot.api.bot_configuration import BotConfiguration
-import psycopg2
 import os
-
 from viber_bot import viber_bot
 
 app = Flask(__name__)
@@ -13,7 +11,6 @@ viber = Api(BotConfiguration(
            '/fc477e80d5306023ccf92a07170886fee98bba96aca04959700207a62cc6f09b.jpg',
     auth_token='4ac9ce371e67d30e-9dc412b2061eb971-fb15ec32858c9525'
 ))
-
 
 
 @app.route('/', methods=['POST'])
@@ -30,8 +27,6 @@ def incoming():
     return Response(status=200)
 
 
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
