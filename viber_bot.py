@@ -199,6 +199,9 @@ class viber_bot:
                        TextMessage(text='Правильный ответ "' + KeysWords[self.current_user.id][
                            'right_answer'].translation + '"')]
 
+        self.__save__answer__()
+        message = message + self.__new__word__message__()
+
         return message
 
     def __example_message__(self):
