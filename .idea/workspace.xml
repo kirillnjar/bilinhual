@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2284689a-ea8c-418b-bcad-83addded6c44" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebHook1.py" beforeDir="false" afterPath="$PROJECT_DIR$/WebHook1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/viber_bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/viber_bot.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,7 +39,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.WebHook1">
+  <component name="RunManager" selected="Python.main">
     <configuration name="WebHook" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Лабораторная работа №1" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -145,8 +147,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.WebHook1" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.WebHook1" />
         <item itemvalue="Python.WebHook" />
         <item itemvalue="Python.notice" />
         <item itemvalue="Python.__init__" />

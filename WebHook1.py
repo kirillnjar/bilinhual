@@ -13,5 +13,5 @@ viber = Api(BotConfiguration(
     auth_token='4ac9ce371e67d30e-9dc412b2061eb971-fb15ec32858c9525'
 ))
 
-#viber.set_webhook('https://40d9482a.ngrok.io')
-viber.set_webhook('https://bilinhual.herokuapp.com/')
+viber.set_webhook('https://4812280b.ngrok.io')
+#viber.set_webhook('https://bilinhual.herokuapp.com/')
